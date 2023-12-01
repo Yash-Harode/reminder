@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import './pages/home_page.dart';
-// ignore: depend_on_referenced_packages
+import 'package:todo/pages/loginpage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
@@ -15,11 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Taskly',
-      // theme: ThemeData(
-      //     primarySwatch: Colors.red,
-      //     ),
-      home: HomePage(),
+      title: 'Reminder',
+      home: LoginPage(),
     );
   }
 }

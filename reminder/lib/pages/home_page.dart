@@ -1,21 +1,23 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-// ignore: depend_on_referenced_packages
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:todo/pages/loginpage.dart';
 import '../model/task.dart';
 
 class HomePage extends StatefulWidget {
+  final String username;
   //the reason behins using the stateful widget is there gonna be something change in our app after appling some opration on it
   //in Stateful widget we dont use an override method but createState Method
-  HomePage();
+  const HomePage({super.key, required this.username});
 
   @override
   State<StatefulWidget> createState() {
     return _HomePageState();
   }
 }
+
+DateTime now = DateTime.now();
 
 //Private class we cants access it out of its area
 //since we are using HomePage in our main file
@@ -24,8 +26,15 @@ class _HomePageState extends State<HomePage> {
   late double _deviceHeight;
 
   String? _newTaskContent; //input value from add tasak
-
+  //var user;
   Box? _box;
+
+  String formattedDate = DateFormat('dd').format(now);
+  String dayOfWeek =
+      DateFormat('EEEE').format(now); // Full day name (e.g., Tuesday)
+  String month =
+      DateFormat('MMMM').format(now); // Full month name (e.g., February)
+
   _HomePageState();
 
   @override
@@ -36,19 +45,59 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     _deviceHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(116, 123, 254, 0.736),
-        toolbarHeight: _deviceHeight * 0.10,
-        centerTitle: true,
-        title: const Text(
-          "To-Do",
-          style: TextStyle(
-            fontSize: 25,
-          ),
-        ),
-      ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.exit_to_app),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+          automaticallyImplyLeading: false,
+          backgroundColor: const Color.fromRGBO(116, 123, 254, 0.736),
+          toolbarHeight: _deviceHeight * 0.15,
+          centerTitle: true,
+          title: Column(
+            children: [
+              Text(
+                'Reminder',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 84, 70, 70),
+                  fontSize: 25,
+                ),
+              ),
+              Text(
+                'Welcome to the Reminder Application\n${widget.username} \nToday is $dayOfWeek, $formattedDate th of $month',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          )),
       body: _tasksView(),
+      // body: Column(
+      //   mainAxisAlignment: MainAxisAlignment.start,
+      //   children: [
+      //     Text(
+      //       "Welcome to the Reminder Application ${widget.username} Today is $dayOfWeek, $formattedDate th of $month",
+      //       style: TextStyle(
+      //         fontSize: 19,
+      //         fontWeight: FontWeight.bold,
+      //       ),
+      //       textAlign: TextAlign.left,
+      //     ),
+      //     _tasksView(),
+      //     ElevatedButton(
+      //       onPressed: () => LoginPage(),
+      //       style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+      //       child: const Text("Log Out"),
+      //     ),
+      //   ],
+      // ),
       floatingActionButton: _addTaskButton(),
     );
   }
